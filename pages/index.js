@@ -2,9 +2,21 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Feed from '../components/Feed'
 import Sidebar from '../components/Sidebar'
+import Widgets from '../components/Widgets'
 import styles from '../styles/Home.module.css'
-
-export default function Home() {
+import axios from 'axios'
+import { useEffect } from 'react'
+export default function Home({newNews, randomUsers}) {
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     await axios.get('https://saurav.tech/NewsAPI/top-headlines/category/business/in.json')
+  //     .then((res) => {
+  //       console.log('res', res)
+  //     })
+  //     console.log('newNews', newNews)
+  //   }
+  //   fetchData();
+  // }, [])
   return (
     <div className={styles.container}>
       <Head>
@@ -13,10 +25,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className=' min-h-screen max-w-[100%] mx-auto '>
+      <main className=' min-h-screen max-w-[100%] mx-auto flex'>
         <Sidebar />
         
         <Feed />
+        <Widgets newNews={newNews} randomUsers={randomUsers} />
         {/* Widgets */}
         {/* Modal */}
       </main>
@@ -24,4 +37,18 @@ export default function Home() {
       
     </div>
   )
+}
+// https://saurav.tech/NewsAPI/top-headlines/category/business/in.json
+export const getServerSideProps = async () => {
+  const newNews = await axios.get('https://saurav.tech/NewsAPI/top-headlines/category/business/in.json')
+  // who to follow section
+  const randomUsers = await axios.get('https://randomuser.me/api/?results=30&inc=name,login,picture')
+
+  return {
+    props: {
+      newNews: newNews?.data?.articles,
+      randomUsers: randomUsers?.data?.results,
+    },
+
+  }
 }

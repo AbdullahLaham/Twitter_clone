@@ -1,24 +1,23 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
-import {BsTwitter, BsBookmark, BsListStars} from 'react-icons/bs'
-import {AiFillHome, AiOutlineMail, AiOutlineUser} from 'react-icons/ai'
-import {FaHashtag} from 'react-icons/fa'
-import {FaBell} from 'react-icons/fa'
+import {BsTwitter, BsBookmark, BsListStars, BsHash} from 'react-icons/bs'
+import {AiOutlineHome, AiOutlineMail, AiOutlineUser, AiOutlineBell} from 'react-icons/ai'
 import {CgMoreO, CgMoreAlt} from 'react-icons/cg'
 import {GiFeather} from 'react-icons/gi'
 import SidebarLink from './SidebarLink'
+import {HiHashtag} from 'react-icons/hi'
 const menuItems = [
     {
       text: "Home",
-      icon: AiFillHome,
+      icon: AiOutlineHome,
     },
     {
       text: "Explore",
-      icon: FaHashtag,
+      icon: HiHashtag,
     },
     {
       text: "Notification",
-      icon: FaBell,
+      icon: AiOutlineBell,
     },
     {
       text: "Messages",
@@ -45,7 +44,7 @@ const Sidebar = () => {
   const [active, setActive] = useState('Home');
 
   return (
-    <div className='hidden sm:flex flex-col items-start justify-between  xl:items-start xl:w-[340px] fixed h-full'>
+    <div className='hidden sm:flex flex-col items-start justify-between  xl:items-start pr-[1.5rem] fixed h-full border-r border-gray-300 '>
       <div>
         <div className='flex items-center justify-center w-14 h-14 hoverAnimation p-0'>
           <BsTwitter className='text-[#57a9f5] text-3xl' />
