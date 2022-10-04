@@ -11,7 +11,7 @@ const Widgets = ({newNews, randomUsers}) => {
     showAll ? setArticleLength(newNews.length) : setArticleLength(3)
   }, [showAll])
   return (
-    <div className='w-[100%] mt-[0rem] hidden lg:block'>
+    <div className='w-[100%] mt-[0rem] hidden lg:block sticky top-0'>
       <div className='sticky top-0 bg-white h-[4.8rem]' >
         <div className='flex items-center p-3 rounded-full relative ' >
             <BsSearch className='h-5 absolute left-[20px] z-10  ' />
