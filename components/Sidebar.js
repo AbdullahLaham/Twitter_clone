@@ -6,6 +6,10 @@ import {CgMoreO, CgMoreAlt} from 'react-icons/cg'
 import {GiFeather} from 'react-icons/gi'
 import SidebarLink from './SidebarLink'
 import {HiHashtag} from 'react-icons/hi'
+import { useRouter } from 'next/router'
+import { useContext } from 'react'
+import { Store } from '../store'
+import { useEffect } from 'react'
 const menuItems = [
     {
       text: "Home",
@@ -42,9 +46,15 @@ const menuItems = [
   ];
 const Sidebar = () => {
   const [active, setActive] = useState('Home');
-
+  const {dispatch, state} = useContext(Store);
+  const [currentUser, setCurrentUser] = useState();
+  console.log('userSid', currentUser);
+  // router
+  useEffect(() => {
+    setCurrentUser(JSON.parse(localStorage.getItem('user')));
+  }, [])
   return (
-    <div className='hidden sm:flex flex-col items-start justify-between  xl:items-start pr-[1.5rem] fixed h-full border-r border-gray-300 '>
+    <div className='hidden sm:flex flex-col items-start justify-between  xl:items-start pr-[1.5rem] fixed h-full border-gray-300 '>
       <div>
         <div className='flex items-center justify-center w-14 h-14 hoverAnimation p-0'>
           <BsTwitter className='text-[#57a9f5] text-3xl' />
@@ -52,7 +62,7 @@ const Sidebar = () => {
         <div className='space-y-2.5 mt-4 mb-2.5  flex flex-col '>
           {menuItems.map((item, i) => {
             return (
-              <div onClick={() => setActive(item.text)}>
+              ((i < 2) || (i > 2 && currentUser)) && <div onClick={() => setActive(item.text)}>
                 <SidebarLink  Icon = {item.icon} text={item.text} active={active == item.text}  />
               </div>
             )
@@ -60,23 +70,27 @@ const Sidebar = () => {
         </div>
         
         
-        <button className='hidden xl:block text-center bg-blue-500 text-white rounded-full  cursor-pointer w-[13rem] h-12 hover:brightness-95 text-lg  '>Tweet</button>
-        <div className='xl:hidden w-[3rem] p-[1rem] bg-blue-500 text-center  text-white font-bold cursor-pointer rounded-full'>
-          <GiFeather/>
-        </div>
+        {currentUser && (
+          <>
+            <button className='hidden xl:block text-center bg-blue-500 text-white rounded-full  cursor-pointer w-[13rem] h-12 hover:brightness-95 text-lg  '>Tweet</button>
+            <div className='xl:hidden w-[3rem] p-[1rem] bg-blue-500 text-center  text-white font-bold cursor-pointer rounded-full'>
+              <GiFeather/>
+            </div>
+          </>
+        )}
        
       </div>
       {/* Mini Profile */}
-      <div className='flex items-center justify-start text-gray-700 cursor-pointer  hoverAnimation'>
-        <AiOutlineUser className='p-[1.5rem] bg-red-500 text-white rounded-full mr-[.3rem]'/>
-        <div className='hidden lg:flex items-center justify-start text-gray-700 cursor-pointer  hoverAnimation'>
+      {currentUser && (<div className='flex items-center justify-start text-gray-700 cursor-pointer  hoverAnimation'>
+        <img src={currentUser?.image} className='w-[3rem] h-[3rem] text-white rounded-full mr-[.3rem] object-cover'/>
+        <div className='hidden lg:flex items-center justify-start text-gray-700 cursor-pointer mb-[.5rem]'>
           <div>
-            <h4 className='font-bold'>Abdullah lahham</h4>
-            <p className='text-gray-500'>ffff5555@gmail.com</p>
+            <h4 className='font-bold'>{currentUser.userName}</h4>
+            <p className='text-gray-500'>{currentUser?.email}</p>
           </div>
           <CgMoreAlt className='text-3xl ml-[.3rem] ' />
         </div>
-      </div>
+      </div>)}
     </div>
   )
 }
