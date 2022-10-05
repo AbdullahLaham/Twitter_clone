@@ -13,12 +13,15 @@ import { useEffect } from 'react';
 import { async } from '@firebase/util';
 import { deleteObject, ref } from 'firebase/storage';
 import { AnimatePresence } from 'framer-motion';
+import { useRecoilState } from 'recoil';
+import { modalState } from '../atom/commentAtom';
 
 const Post = ({post}) => {
   // the current user
   const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [likes, setLikes] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
+  const [open, setOpen] = useRecoilState(modalState)
   // adding like to the post function
   const addLike = async () => {
 
@@ -66,7 +69,7 @@ const Post = ({post}) => {
             {post.data().image && <img src={post?.data()?.image} className='h-[30rem] w-[30rem] object-cover rounded-md' />}
         </div>
         <div className='flex justify-between p-[1rem] '>
-            <div className='text-xl cursor-pointer hoverAnimation p-[1rem] hover:bg-blue-200 hover:text-blue-500'>
+            <div onClick={() => setOpen(!open)} className='text-xl cursor-pointer hoverAnimation p-[1rem] hover:bg-blue-200 hover:text-blue-500'>
                 <FaRegCommentDots className='cursor-pointer'/>
             </div>
             {currentUser?._id === post?.data()?.id && (<div onClick={deletePost} className='cursor-pointer text-xl cursor-pointer hoverAnimation p-[1rem] hover:bg-red-200 hover:text-red-500'>

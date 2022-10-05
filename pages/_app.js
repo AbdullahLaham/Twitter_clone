@@ -1,9 +1,12 @@
 import '../styles/globals.css'
 import {StoreProvider} from '../store'
+import { RecoilRoot } from 'recoil'
 function MyApp({ Component, pageProps }) {
   return (
     <StoreProvider>
-      <Component {...pageProps} />
+      <RecoilRoot>
+        <Component {...pageProps} />
+      </RecoilRoot>
     </StoreProvider>
   )
 }

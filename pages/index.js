@@ -10,6 +10,7 @@ import {Store} from '../store'
 import { useContext } from 'react'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import CommentSection from '../components/CommentSection'
 
 export default function Home({newNews, randomUsers}) {
   const {dispatch, state} = useContext(Store);
@@ -32,7 +33,8 @@ export default function Home({newNews, randomUsers}) {
         <Sidebar />
         <Feed />
         <Widgets newNews={newNews} randomUsers={randomUsers} />
-        {/* Modal */}
+        {/* CommentSection */}
+        <CommentSection />
       </main>
     </div>
   )
