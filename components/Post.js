@@ -21,7 +21,9 @@ const Post = ({post}) => {
   const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [likes, setLikes] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
-  const [open, setOpen] = useRecoilState(modalState)
+  const [open, setOpen] = useRecoilState(modalState);
+  const [postId, setPostId] = useRecoilState(postIdlState);
+
   // adding like to the post function
   const addLike = async () => {
 
