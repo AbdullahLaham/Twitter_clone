@@ -7,9 +7,11 @@ import {TbBrandGoogleAnalytics} from 'react-icons/tb'
 import {FiTrash2} from 'react-icons/fi';
 import Moment from 'react-moment';
 import { collection, deleteDoc, doc, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db, storage } from '../firebase';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { async } from '@firebase/util';
+import { deleteObject, ref } from 'firebase/storage';
 
 const Post = ({post}) => {
   // the current user
@@ -27,6 +29,15 @@ const Post = ({post}) => {
       });
     }
 
+  }
+  // deleting the post function
+  const deletePost = async () => {
+    if (window.confirm("Are you sure you want to delete this post!")) {
+      // deleting from firestore database
+      await deleteDoc(doc(db, "posts", post?.id))
+      // deleting the image from firebase Storage
+      await deleteObject(ref(storage, `posts/${post?.id}/image`))
+    }
   }
   useEffect(() => {
     const unsubscribe = onSnapshot(query(collection(db, "posts", post?.id, "likes")), (snapshot) => {
@@ -55,11 +66,11 @@ const Post = ({post}) => {
             <div className='text-xl cursor-pointer hoverAnimation p-[1rem] hover:bg-blue-200 hover:text-blue-500'>
                 <FaRegCommentDots className='cursor-pointer'/>
             </div>
-            <div className='text-xl cursor-pointer hoverAnimation p-[1rem] hover:bg-red-200 hover:text-red-500'>
+            {currentUser?._id === post?.data()?.id && (<div onClick={deletePost} className='cursor-pointer text-xl cursor-pointer hoverAnimation p-[1rem] hover:bg-red-200 hover:text-red-500'>
                 <FiTrash2 className='cursor-pointer'/>
-            </div>
+            </div>)}
             {<div>
-              <div className={`flex items-center gap-1 text-xl cursor-pointer hoverAnimation p-[1rem] ${isLiked && "text-red-500 bg-red-200 active:text-black active:bg-white"}` }onClick={addLike}>
+              <div className={`cursor-pointer flex items-center gap-1 text-xl cursor-pointer hoverAnimation p-[1rem] ${isLiked && "text-red-500 bg-red-200 active:text-black active:bg-white"}` }onClick={addLike}>
                 <BsFillSuitHeartFill className='cursor-pointer'/>
                 <p className='mt-[-.2rem]'>{likes.length > 0 && likes.length}</p>
               </div>
