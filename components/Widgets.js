@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -31,17 +32,28 @@ const Widgets = ({newNews, randomUsers}) => {
         <h4 className='font-bold text-xl px-2 '>Who to follow</h4>
         {
           randomUsers.map((user, i) => {
-            return i < usersNum && <div className='flex items-center justify-between' key={i} >
-              <img className='rounded-full object-cover mr-[.5rem]' width='40' src={user.picture.thumbnail} />
-              <div className='w-[100%] flex flex-col items-start'>
-                <p>{user.login.username}</p>
-                <p className='text-gray-400'>{user.name.first.split(" ")[0]} {user.name.last.split(" ")[0]}</p>
+            return i < usersNum && 
+            <AnimatePresence>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+              >
+              <div className='flex items-center justify-between' key={i} >
+                <img className='rounded-full object-cover mr-[.5rem]' width='40' src={user.picture.thumbnail} />
+                <div className='w-[100%] flex flex-col items-start'>
+                  <p>{user.login.username}</p>
+                  <p className='text-gray-400'>{user.name.first.split(" ")[0]} {user.name.last.split(" ")[0]}</p>
+                </div>
+                <button className=' text-center bg-[#000] text-white rounded-full shadow-md cursor-pointer w-[5rem] px-[.5rem] h-8 hover:brightness-95 text-lg'>Follow</button>
               </div>
-              <button className=' text-center bg-[#000] text-white rounded-full shadow-md cursor-pointer w-[5rem] px-[.5rem] h-8 hover:brightness-95 text-lg'>Follow</button>
-            </div>
+              </motion.div>
+            </AnimatePresence>
+
           })
         }
-        <button className='px-2 text-blue-400 hover:text-blue-500 cursor-pointer' onClick={() => {setUsersNum(usersNum+3)}}>Show More</button>
+        <button className='cursor-pointer px-2 text-blue-400 hover:text-blue-500 cursor-pointer' onClick={() => {setUsersNum(usersNum+3)}}>Show More</button>
       </div>
       
     </div>

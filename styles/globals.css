@@ -8,6 +8,6 @@
 }
 @layer components {
   .hoverAnimation {
-    @apply hover:bg-[#3d3c3c] hover:bg-opacity-10 rounded-full cursor-pointer  lg:h-auto xl:py-3 transition duration-200 ease-out 
+    @apply hover:bg-[#3d3c3c] hover:bg-opacity-10 transition duration-500 ease-out rounded-full cursor-pointer  lg:h-auto xl:py-3 transition duration-200 ease-out 
   }
 }

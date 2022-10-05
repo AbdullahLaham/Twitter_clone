@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { async } from '@firebase/util';
 import { deleteObject, ref } from 'firebase/storage';
+import { AnimatePresence } from 'framer-motion';
 
 const Post = ({post}) => {
   // the current user
@@ -35,8 +36,10 @@ const Post = ({post}) => {
     if (window.confirm("Are you sure you want to delete this post!")) {
       // deleting from firestore database
       await deleteDoc(doc(db, "posts", post?.id))
-      // deleting the image from firebase Storage
-      await deleteObject(ref(storage, `posts/${post?.id}/image`))
+      if (post?.data()?.image) {
+        // deleting the image from firebase Storage
+        await deleteObject(ref(storage, `posts/${post?.id}/image`))
+      }
     }
   }
   useEffect(() => {

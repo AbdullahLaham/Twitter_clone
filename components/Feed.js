@@ -5,6 +5,8 @@ import {BsStars} from 'react-icons/bs';
 import { db } from '../firebase';
 import Input from './Input';
 import Post from './Post';
+import { AnimatePresence, motion } from 'framer-motion';
+
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
@@ -26,7 +28,17 @@ const Feed = () => {
       <Input />
       {posts.map(post => {
         return (
-          <Post key={post?.id} post={post} />
+          <AnimatePresence>
+            <motion.div
+              key={post.id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+            >
+              <Post key={post?.id} post={post} />
+            </motion.div>
+          </AnimatePresence>
         )
       })}
     </div>
