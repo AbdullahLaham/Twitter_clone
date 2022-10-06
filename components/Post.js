@@ -10,11 +10,11 @@ import { collection, deleteDoc, doc, onSnapshot, orderBy, query, setDoc } from '
 import { db, storage } from '../firebase';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { async } from '@firebase/util';
+// import { async } from '@firebase/util';
 import { deleteObject, ref } from 'firebase/storage';
 import { AnimatePresence } from 'framer-motion';
 import { useRecoilState } from 'recoil';
-import { modalState } from '../atom/commentAtom';
+import { modalState, postIdlState } from '../atom/commentAtom';
 
 const Post = ({post}) => {
   // the current user
@@ -23,7 +23,7 @@ const Post = ({post}) => {
   const [isLiked, setIsLiked] = useState(false);
   const [open, setOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdlState);
-
+  const [comments, setComments] = useState([]);
   // adding like to the post function
   const addLike = async () => {
 
@@ -55,10 +55,18 @@ const Post = ({post}) => {
     
   }, [db])
   useEffect(() => {
+    const data = onSnapshot(collection(db, "posts", post?.id, "comment"), (snapshot) => {
+      console.log('docs', snapshot.docs)
+      setComments(snapshot.docs);
+    })
+
+  }, [db])
+  useEffect(() => {
 
     setIsLiked(likes.findIndex((like) => like.id === currentUser?._id) !== -1);
     console.log('isLiked', post?.id ,  isLiked)
-  }, [likes, currentUser])
+  }, [likes, currentUser]);
+
   return (
     <div className='flex justify-start mb-[2rem] p-[1rem]'>
       <div className='mr-[.5rem]'>
@@ -71,14 +79,16 @@ const Post = ({post}) => {
             {post.data().image && <img src={post?.data()?.image} className='h-[30rem] w-[30rem] object-cover rounded-md' />}
         </div>
         <div className='flex justify-between p-[1rem] '>
-            <div onClick={() => setOpen(!open)} className='text-xl cursor-pointer hoverAnimation p-[1rem] hover:bg-blue-200 hover:text-blue-500'>
+            <div onClick={() => {setOpen(!open); setPostId(post?.id); localStorage.setItem('id', post?.id)}} className='flex items-center gap-2 text-xl cursor-pointer hoverAnimation p-[1rem] hover:bg-blue-200 hover:text-blue-500'>
                 <FaRegCommentDots className='cursor-pointer'/>
+                {comments.length > 0 && <p>{comments.length}</p>}
+                
             </div>
-            {currentUser?._id === post?.data()?.id && (<div onClick={deletePost} className='cursor-pointer text-xl cursor-pointer hoverAnimation p-[1rem] hover:bg-red-200 hover:text-red-500'>
+            {currentUser?._id === post?.data()?.id && (<div onClick={deletePost} className=' text-xl cursor-pointer hoverAnimation p-[1rem] hover:bg-red-200 hover:text-red-500'>
                 <FiTrash2 className='cursor-pointer'/>
             </div>)}
             {<div>
-              <div className={`cursor-pointer flex items-center gap-1 text-xl cursor-pointer hoverAnimation p-[1rem] ${isLiked && "text-red-500 bg-red-200 active:text-black active:bg-white"}` }onClick={addLike}>
+              <div className={`cursor-pointer flex items-center gap-1 text-xl hoverAnimation p-[1rem] ${isLiked && "text-red-500 bg-red-200 active:text-black active:bg-white"}` }onClick={addLike}>
                 <BsFillSuitHeartFill className='cursor-pointer'/>
                 <p className='mt-[-.2rem]'>{likes.length > 0 && likes.length}</p>
               </div>
