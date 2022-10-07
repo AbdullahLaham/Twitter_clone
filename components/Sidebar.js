@@ -10,6 +10,8 @@ import { useRouter } from 'next/router'
 import { useContext } from 'react'
 import { Store } from '../store'
 import { useEffect } from 'react'
+import { signOut } from 'firebase/auth'
+import { auth } from '../firebase'
 const menuItems = [
     {
       text: "Home",
@@ -49,10 +51,18 @@ const Sidebar = () => {
   const {dispatch, state} = useContext(Store);
   const [currentUser, setCurrentUser] = useState();
   console.log('userSid', currentUser);
+
   // router
+  const router = useRouter();
   useEffect(() => {
-    setCurrentUser(JSON.parse(localStorage.getItem('user')));
+    setCurrentUser(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {});
   }, [])
+
+  const handleGoogleSignout = () => {
+    signOut(auth);
+    localStorage.setItem('user', JSON.stringify({}));
+    router.push('/auth/signin')
+  }
   return (
     <div className='hidden sm:flex flex-col items-start justify-between  xl:items-start pr-[1.5rem] fixed h-full border-gray-300 '>
       <div>
@@ -81,7 +91,7 @@ const Sidebar = () => {
        
       </div>
       {/* Mini Profile */}
-      {currentUser && (<div className='flex items-center justify-start text-gray-700 cursor-pointer  hoverAnimation'>
+      {currentUser && (<div onClick={handleGoogleSignout} className='flex items-center justify-start text-gray-700 cursor-pointer  hoverAnimation'>
         <img src={currentUser?.image} className='w-[3rem] h-[3rem] text-white rounded-full mr-[.3rem] object-cover'/>
         <div className='hidden lg:flex items-center justify-start text-gray-700 cursor-pointer mb-[.5rem]'>
           <div>

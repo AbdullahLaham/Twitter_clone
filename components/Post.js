@@ -15,15 +15,19 @@ import { deleteObject, ref } from 'firebase/storage';
 import { AnimatePresence } from 'framer-motion';
 import { useRecoilState } from 'recoil';
 import { modalState, postIdlState } from '../atom/commentAtom';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const Post = ({post}) => {
   // the current user
-  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [currentUser, setCurrentUser] = useState();
   const [likes, setLikes] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
   const [open, setOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdlState);
   const [comments, setComments] = useState([]);
+  // router
+  const router = useRouter();
   // adding like to the post function
   const addLike = async () => {
 
@@ -44,9 +48,12 @@ const Post = ({post}) => {
       if (post?.data()?.image) {
         // deleting the image from firebase Storage
         await deleteObject(ref(storage, `posts/${post?.id}/image`))
+        router.push('/')
       }
     }
   }
+
+  
   useEffect(() => {
     const unsubscribe = onSnapshot(query(collection(db, "posts", post?.id, "likes")), (snapshot) => {
       setLikes(snapshot.docs);
@@ -66,18 +73,24 @@ const Post = ({post}) => {
     setIsLiked(likes.findIndex((like) => like.id === currentUser?._id) !== -1);
     console.log('isLiked', post?.id ,  isLiked)
   }, [likes, currentUser]);
-
+  useEffect(() => {
+    setCurrentUser(JSON.parse(localStorage.getItem('user')))
+  }, [])
   return (
     <div className='flex justify-start mb-[2rem] p-[1rem]'>
       <div className='mr-[.5rem]'>
-        <img src={post?.data()?.userImg} className='w-[4rem] h-[4rem] rounded-full object-cover'  />
+        <img src={post?.data()?.userImg} className='w-[3rem] h-[3rem] rounded-full object-cover'  />
       </div>
       <div>
-        <div className='flex items-center justify-between'><div className='flex items-center whitespace-nowrap'><p className='mr-[.5rem] cursor-pointer font-bold'>{post?.data()?.name}</p><p className='mr-[.5rem]'>{post?.data()?.username}</p><p className='mr-[.5rem] hover:underline hover:cursor-pointer text-sm '>- <Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment></p> </div><div className='p-[.5rem] text-3xl ml-[3rem] hoverAnimation cursor-pointer'><CgMoreAlt className='' /></div></div>
-        <p className='text-gray-800 text-[15px] sm:text-[16px] '>{post?.data()?.text}</p>
-        <div className='max-h-[25rem] overflow-hidden mt-[1.1rem]'>
+        <Link href={`/post/${post?.id}`}>
+          <div>
+            <div className='flex items-center justify-between'><div className='flex items-center whitespace-nowrap'><p className='mr-[.5rem] cursor-pointer font-bold'>{post?.data()?.name}</p><p className='mr-[.5rem]'>{post?.data()?.username}</p><p className='mr-[.5rem] hover:underline hover:cursor-pointer text-sm '>- <Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment></p> </div><div className='p-[.5rem] text-3xl ml-[3rem] hoverAnimation cursor-pointer'><CgMoreAlt className='' /></div></div>
+            <p className='text-gray-800 text-[15px] sm:text-[16px] '>{post?.data()?.text}</p>
+          </div>
+        </Link>
+        <Link href={`/post/${post?.id}`} className='max-h-[25rem] overflow-hidden mt-[1.1rem]'>
             {post.data().image && <img src={post?.data()?.image} className='h-[30rem] w-[30rem] object-cover rounded-md' />}
-        </div>
+        </Link>
         <div className='flex justify-between p-[1rem] '>
             <div onClick={() => {setOpen(!open); setPostId(post?.id); localStorage.setItem('id', post?.id)}} className='flex items-center gap-2 text-xl cursor-pointer hoverAnimation p-[1rem] hover:bg-blue-200 hover:text-blue-500'>
                 <FaRegCommentDots className='cursor-pointer'/>

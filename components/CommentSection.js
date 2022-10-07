@@ -10,6 +10,7 @@ import { data } from 'autoprefixer';
 import Moment from 'react-moment';
 import { TbPhoto } from 'react-icons/tb';
 import { BiHappy } from 'react-icons/bi';
+import { useRouter } from 'next/router';
 const CommentSection = () => {
     const [open, setOpen] = useRecoilState(modalState);
     const [postId] = useRecoilState(postIdlState);
@@ -18,7 +19,9 @@ const CommentSection = () => {
     const [input, setInput] = useState("");
     const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(false);
-    
+    // router
+    const router = useRouter();
+
     useEffect(() => {
       console.log('postId', postId)
       const unsubscribe = onSnapshot(query(collection(db, "posts"), orderBy("timestamp", "desc")), (snapshot) => {
@@ -38,6 +41,7 @@ const CommentSection = () => {
     const sendComment = async () => {
       setLoading(true);
       await addDoc(collection(db, "posts", localStorage.getItem('id'), "comment"), {
+        
         comment: input,
         name: currentUser?.userName,
         userName: currentUser?.email,
@@ -48,6 +52,7 @@ const CommentSection = () => {
       setOpen(false);
       setInput("");
       setLoading(false);
+      router.push(`/post/${localStorage.getItem('id')}`)
     }
   return (
     <>

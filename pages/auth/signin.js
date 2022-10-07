@@ -28,7 +28,8 @@ const Signin = () => {
         try {
           const provider = new GoogleAuthProvider();
            googleSignIn(provider);
-           router.push('/', {replace: true},)
+           const user = JSON.parse(localStorage.getItem('user'))
+           if (user?._id) router.push('/', {replace: true},)
            
         }
         catch(err) {
