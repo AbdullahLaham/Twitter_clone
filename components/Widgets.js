@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
 import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -10,7 +11,7 @@ const Widgets = ({newNews, randomUsers}) => {
   const [usersNum, setUsersNum] = useState(3);
   useEffect(() => {
     showAll ? setArticleLength(newNews.length) : setArticleLength(3)
-  }, [showAll])
+  }, [showAll, newNews.length])
   return (
     <div className='w-[100%] mt-[0rem] hidden lg:block sticky top-0'>
       <div className='sticky top-0 bg-white h-[4.8rem]' >
@@ -41,7 +42,7 @@ const Widgets = ({newNews, randomUsers}) => {
                 transition={{ duration: 1 }}
               >
               <div className='flex items-center justify-between' key={i} >
-                <img className='rounded-full object-cover mr-[.5rem]' width='40' src={user.picture.thumbnail} />
+                <Image className='rounded-full object-cover mr-[.5rem]' width='40' src={user.picture.thumbnail} />
                 <div className='w-[100%] flex flex-col items-start'>
                   <p>{user.login.username}</p>
                   <p className='text-gray-400'>{user.name.first.split(" ")[0]} {user.name.last.split(" ")[0]}</p>
@@ -53,7 +54,7 @@ const Widgets = ({newNews, randomUsers}) => {
 
           })
         }
-        <button className='cursor-pointer px-2 text-blue-400 hover:text-blue-500 cursor-pointer' onClick={() => {setUsersNum(usersNum+3)}}>Show More</button>
+        <button className='cursor-pointer px-2 text-blue-400 hover:text-blue-500 ' onClick={() => {setUsersNum(usersNum+3)}}>Show More</button>
       </div>
       
     </div>

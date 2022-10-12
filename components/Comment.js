@@ -17,6 +17,7 @@ import { AnimatePresence } from 'framer-motion';
 import { useRecoilState } from 'recoil';
 import { modalState, postIdlState } from '../atom/commentAtom';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 const Comment = ({id, comment, commentId, userId}) => {
     console.log('gggg', comment)
@@ -57,18 +58,18 @@ const Comment = ({id, comment, commentId, userId}) => {
       console.log('unsubscribe', snapshot.docs)
     });
     
-  }, [db])
+  }, [db, commentId, id])
   useEffect(() => {
     const data = onSnapshot(collection(db, "posts", id, "comment"), (snapshot) => {
       console.log('docs', snapshot.docs)
       setComments(snapshot.docs);
     })
 
-  }, [db])
+  }, [db, id])
   useEffect(() => {
     setIsLiked(likes.findIndex((like) => like.id === currentUser?._id) !== -1);
     console.log('isLiked',isLiked)
-  }, [comments, currentUser, likes]);
+  }, [comments, currentUser, likes, isLiked]);
 
   useEffect(() => {
     setCurrentUser(JSON.parse(localStorage.getItem('user')))
@@ -77,7 +78,7 @@ const Comment = ({id, comment, commentId, userId}) => {
   return (
     <div className='flex justify-start mb-[2rem] p-[1rem]'>
       <div className='mr-[.5rem]'>
-        <img src={comment?.userImg} className='w-[3rem] h-[3rem] rounded-full object-cover'  />
+        <Image src={comment?.userImg} className='w-[3rem] h-[3rem] rounded-full object-cover'  />
       </div>
       <div>
         <div className='flex items-center justify-between'><div className='flex items-center whitespace-nowrap'><p className='mr-[.5rem] cursor-pointer font-bold'>{comment?.name}</p><p className='mr-[.5rem]'>{comment?.userName}</p><p className='mr-[.5rem] hover:underline hover:cursor-pointer text-sm '>- <Moment fromNow>{comment?.timestamp?.toDate()}</Moment></p> </div><div className='p-[.5rem] text-3xl ml-[3rem] hoverAnimation cursor-pointer'><CgMoreAlt className='' /></div></div>

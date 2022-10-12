@@ -20,7 +20,7 @@ export default function Home({newNews, randomUsers}) {
   useEffect(() => {
     if (!localStorage.getItem('user')) router.push('/auth/signin', {replace: true},);
     setCurrentUser(state.user);
-  }, [])
+  }, [router, state?.user])
 
   return (
     <div className={styles.container} >

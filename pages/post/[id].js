@@ -30,7 +30,7 @@ const PostPage = ({newNews, randomUsers}) => {
   useEffect(() => {
     if (!localStorage.getItem('user')) router.push('/auth/signin', {replace: true},);
     setCurrentUser(state.user);
-  }, [])
+  }, [router, state?.user, db])
 
   
   useEffect(() => {
@@ -66,7 +66,7 @@ const PostPage = ({newNews, randomUsers}) => {
           
         </div>
         {post && <Post post={post}/>}
-        {comments.map((comment) => <Comment id={post.id} commentId={comment.id} comment={comment.data()} userId={currentUser?._id} />)}
+        {comments.map((comment, i) => <Comment key={i} id={post.id} commentId={comment.id} comment={comment.data()} userId={currentUser?._id} />)}
     </div>   
         <Widgets newNews={newNews} randomUsers={randomUsers} />
         {/* CommentSection */}

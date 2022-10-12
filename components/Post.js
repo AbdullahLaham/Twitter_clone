@@ -17,6 +17,7 @@ import { useRecoilState } from 'recoil';
 import { modalState, postIdlState } from '../atom/commentAtom';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Post = ({post}) => {
   // the current user
@@ -60,26 +61,26 @@ const Post = ({post}) => {
       console.log('unsubscribe', snapshot.docs)
     });
     
-  }, [db])
+  }, [db, post?.id])
   useEffect(() => {
     const data = onSnapshot(collection(db, "posts", post?.id, "comment"), (snapshot) => {
       console.log('docs', snapshot.docs)
       setComments(snapshot.docs);
     })
 
-  }, [db])
+  }, [db, post?.id])
   useEffect(() => {
 
     setIsLiked(likes.findIndex((like) => like.id === currentUser?._id) !== -1);
     console.log('isLiked', post?.id ,  isLiked)
-  }, [likes, currentUser]);
+  }, [likes, currentUser, post?.id, isLiked]);
   useEffect(() => {
     setCurrentUser(JSON.parse(localStorage.getItem('user')))
   }, [])
   return (
     <div className='flex justify-start mb-[2rem] p-[1rem]'>
       <div className='mr-[.5rem]'>
-        <img src={post?.data()?.userImg} className='w-[3rem] h-[3rem] rounded-full object-cover'  />
+        <Image src={post?.data()?.userImg} className='w-[3rem] h-[3rem] rounded-full object-cover'  />
       </div>
       <div>
         <Link href={`/post/${post?.id}`}>

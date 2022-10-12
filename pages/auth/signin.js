@@ -6,6 +6,7 @@ import {auth} from '../../firebase';
 import { useRouter } from 'next/router';
 import {Store} from '../../store'
 import { useContext } from 'react';
+import Image from 'next/image';
 const Signin = () => {
     const router = useRouter();
     const {dispatch, state} = useContext(Store);
@@ -38,7 +39,7 @@ const Signin = () => {
       }
   return (
     <div className='flex justify-center mt-20 h-[100%] items-center space-x-8'>
-        <img className='w-[19rem] h-[20rem] object-cover rotate-6 hidden md:inline-flex ' src='https://cdn.cms-twdigitalassets.com/content/dam/help-twitter/en/twitter-tips/desktop-assets/ch-01/ch13lingotweet.png.twimg.1920.png' alt='twitter on the phone' />
+        <Image className='w-[19rem] h-[20rem] object-cover rotate-6 hidden md:inline-flex ' src='https://cdn.cms-twdigitalassets.com/content/dam/help-twitter/en/twitter-tips/desktop-assets/ch-01/ch13lingotweet.png.twimg.1920.png' alt='twitter on the phone' />
         <div>
             <div className='flex flex-col items-center justify-center my-auto h-[100%]'>
                 <BsTwitter className='text-[#57a9f5] text-[8rem] mb-[1.5rem]' />

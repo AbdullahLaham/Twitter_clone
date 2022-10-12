@@ -6,6 +6,7 @@ import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/fi
 import {db, storage} from '../firebase'
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { upload } from '@testing-library/user-event/dist/upload'
+import Image from 'next/image'
 const Input = () => {
   // input state 
   const [input, setInput] = useState('');
@@ -62,7 +63,7 @@ const Input = () => {
   return (
     <div className='flex border-b border-gray-200 p-3 pl-[1.5rem] space-x-3'>
         {/* user image */}
-      <div className='p-[.5rem] h-[10rem] object-cover cursor-pointer hover:brightness-95'><img src={currentUser?.image} className='w-[3rem] h-[3rem] rounded-full' /></div>
+      <div className='p-[.5rem] h-[10rem] object-cover cursor-pointer hover:brightness-95'><Image src={currentUser?.image} className='w-[3rem] h-[3rem] rounded-full' /></div>
       <div className=''>
         <div className='w-[100%] divide-y divide-gray-200 ' >
             <textarea  placeholder='whats happening!' value={input} onChange={(e) => setInput(e.target.value)} className='max-h-[8rem] min-h-[6rem] text-gray-500 text-[1.2rem] placeholder-gray-600 tracking-wide  min-w-[35rem] mx-auto form-textarea border-none focus:ring-0 ' ></textarea>
@@ -71,7 +72,7 @@ const Input = () => {
           selectedImage && (
             <div className='relative w-[32rem]'>
               <p className='cursor-pointer hoverAnimation text-2xl absolute top-0 left-4 text-white' onClick={() => {setSelectedImage(null)}}>x</p>
-              <img src={selectedImage} className={`w-[100%] m-auto  ${loading && "animate-pulse"} `} />
+              <Image src={selectedImage} className={`w-[100%] m-auto  ${loading && "animate-pulse"} `} />
             </div>
           )
         }

@@ -26,9 +26,9 @@ const Feed = () => {
         
       </div>
       <Input />
-      {posts.map(post => {
+      {posts.map((post, i) => {
         return (
-          <AnimatePresence>
+          <AnimatePresence key={i}>
             <motion.div
               key={post.id}
               initial={{ opacity: 0 }}
