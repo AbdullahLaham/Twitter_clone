@@ -18,7 +18,7 @@ const News = ({article}) => {
                 <h6 className='text-sm font-bold'>{article?.title}</h6>
                 <p className='text-xs font-bold pt-[.1rem] text-gray-500'>{article?.author}</p>
             </div>
-            <Image className='w-[5rem] h-[5rem] object-cover rounded-md' src={article?.urlToImage} />
+            <Image layout='fill' className='w-[5rem] h-[5rem] object-cover rounded-md' src={article?.urlToImage} />
           </div>
         </a>
       </motion.div>

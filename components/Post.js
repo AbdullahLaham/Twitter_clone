@@ -90,7 +90,7 @@ const Post = ({post}) => {
           </div>
         </Link>
         <Link href={`/post/${post?.id}`} className='max-h-[25rem] overflow-hidden mt-[1.1rem]'>
-            {post.data().image && <img src={post?.data()?.image} className='h-[30rem] w-[30rem] object-cover rounded-md' />}
+            {post.data().image && <Image layout='fill' src={post?.data()?.image} className='h-[30rem] w-[30rem] object-cover rounded-md' />}
         </Link>
         <div className='flex justify-between p-[1rem] '>
             <div onClick={() => {setOpen(!open); setPostId(post?.id); localStorage.setItem('id', post?.id)}} className='flex items-center gap-2 text-xl cursor-pointer hoverAnimation p-[1rem] hover:bg-blue-200 hover:text-blue-500'>

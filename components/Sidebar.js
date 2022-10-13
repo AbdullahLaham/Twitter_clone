@@ -92,7 +92,7 @@ const Sidebar = () => {
       </div>
       {/* Mini Profile */}
       {currentUser && (<div onClick={handleGoogleSignout} className='flex items-center justify-start text-gray-700 cursor-pointer  hoverAnimation'>
-        <Image src={currentUser?.image} className='w-[3rem] h-[3rem] text-white rounded-full mr-[.3rem] object-cover'/>
+        <Image src={currentUser?.image} layout='fill' className='w-[3rem] h-[3rem] text-white rounded-full mr-[.3rem] object-cover'/>
         <div className='hidden lg:flex items-center justify-start text-gray-700 cursor-pointer mb-[.5rem]'>
           <div>
             <h4 className='font-bold'>{currentUser.userName}</h4>

@@ -78,7 +78,7 @@ const Comment = ({id, comment, commentId, userId}) => {
   return (
     <div className='flex justify-start mb-[2rem] p-[1rem]'>
       <div className='mr-[.5rem]'>
-        <Image src={comment?.userImg} className='w-[3rem] h-[3rem] rounded-full object-cover'  />
+        <Image layout='fill' src={comment?.userImg} className='w-[3rem] h-[3rem] rounded-full object-cover'  />
       </div>
       <div>
         <div className='flex items-center justify-between'><div className='flex items-center whitespace-nowrap'><p className='mr-[.5rem] cursor-pointer font-bold'>{comment?.name}</p><p className='mr-[.5rem]'>{comment?.userName}</p><p className='mr-[.5rem] hover:underline hover:cursor-pointer text-sm '>- <Moment fromNow>{comment?.timestamp?.toDate()}</Moment></p> </div><div className='p-[.5rem] text-3xl ml-[3rem] hoverAnimation cursor-pointer'><CgMoreAlt className='' /></div></div>

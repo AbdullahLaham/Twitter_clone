@@ -70,11 +70,11 @@ const CommentSection = () => {
                           <p className='absolute top-[6.5rem] left-[4.2rem] text-gray-500 '>{post?.data()?.text}</p>
                           <div className='mr-[.5rem] flex items-center gap-2'>
                             
-                            <Image src={post?.data().userImg} className='3-[4rem] h-[3rem] rounded-full object-cover'  />
+                            <Image layout='fill' src={post?.data().userImg} className='3-[4rem] h-[3rem] rounded-full object-cover'  />
                             <div className='flex items-center justify-between'><div className='flex items-center whitespace-nowrap'><p className='mr-[.5rem] cursor-pointer font-bold'>{post?.data()?.name}</p><p className='mr-[.5rem]'>{post?.data()?.username}</p><p className='mr-[.5rem] hover:underline hover:cursor-pointer text-sm '><Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment></p> </div></div>
                           </div>
                           <div className='flex items-center  justify-start mt-[2rem]'>
-                            <div className=' object-cover cursor-pointer hover:brightness-95 mt-[-1.2rem]'><Image src={currentUser?.image} className='w-[3rem] h-[3rem] rounded-full' /></div>
+                            <div className=' object-cover cursor-pointer hover:brightness-95 mt-[-1.2rem]'><Image layout='fill' src={currentUser?.image} className='w-[3rem] h-[3rem] rounded-full' /></div>
                             <textarea  placeholder='Tewet your reply' value={input} onChange={(e) => setInput(e.target.value)} className='max-h-[8rem] text-gray-500 resize-none text-[1.2rem] placeholder-gray-600 tracking-wide  min-w-[20rem] form-textarea border-none focus:ring-0 ' ></textarea>
                           </div>
                           <div className='flex items-center justify-between pt-2.5 border-t '>

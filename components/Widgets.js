@@ -42,7 +42,7 @@ const Widgets = ({newNews, randomUsers}) => {
                 transition={{ duration: 1 }}
               >
               <div className='flex items-center justify-between' key={i} >
-                <Image className='rounded-full object-cover mr-[.5rem]' width='40' src={user.picture.thumbnail} />
+                <Image className='rounded-full object-cover mr-[.5rem]' layout='fill' width='40'  src={user.picture.thumbnail} />
                 <div className='w-[100%] flex flex-col items-start'>
                   <p>{user.login.username}</p>
                   <p className='text-gray-400'>{user.name.first.split(" ")[0]} {user.name.last.split(" ")[0]}</p>
